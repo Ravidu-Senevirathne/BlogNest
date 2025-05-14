@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="hidden lg:block lg:w-1/2 mt-10 lg:mt-0">
-            <img src="https://via.placeholder.com/600x400" alt="BlogNest Platform" class="rounded-lg shadow-xl">
+            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" alt="Person writing blog content on laptop" class="rounded-lg shadow-xl">
         </div>
     </div>
 </x-theme.gradient-section>
