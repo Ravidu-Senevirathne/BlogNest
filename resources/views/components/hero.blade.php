@@ -3,7 +3,8 @@
     to="to-purple-600" 
     darkFrom="dark:from-indigo-800" 
     darkTo="dark:to-purple-900"
-    py="py-20">
+    py="py-20"
+    id="home">
     
     <div class="lg:flex lg:items-center lg:justify-between">
         <div class="lg:w-1/2">

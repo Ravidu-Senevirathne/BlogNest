@@ -1,4 +1,4 @@
-<x-theme.section bg="bg-gray-50 dark:bg-gray-900">
+<x-theme.section bg="bg-gray-50 dark:bg-gray-900" id="blog">
     <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">Recent Publications</h2>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">Discover trending stories from our writers</p>

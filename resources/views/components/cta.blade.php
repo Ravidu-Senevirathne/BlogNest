@@ -3,7 +3,8 @@
     to="to-indigo-600" 
     darkFrom="dark:from-purple-800" 
     darkTo="dark:to-indigo-900"
-    container="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    container="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+    id="join">
     
     <h2 class="text-3xl font-bold sm:text-4xl mb-4">Ready to start your writing journey?</h2>
     <p class="text-lg mb-8 opacity-90">Join thousands of writers who have already found their voice on BlogNest</p>

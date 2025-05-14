@@ -1,4 +1,4 @@
-<x-theme.section>
+<x-theme.section id="features">
     <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">Why Choose BlogNest?</h2>
         <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">Powerful features to help you publish and grow</p>

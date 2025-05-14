@@ -1,10 +1,11 @@
 @props([
     'bg' => 'bg-white dark:bg-gray-800',
     'container' => 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
-    'py' => 'py-16'
+    'py' => 'py-16',
+    'id' => ''
 ])
 
-<section class="{{ $bg }} {{ $py }}">
+<section id="{{ $id }}" class="{{ $bg }} {{ $py }}">
     <div class="{{ $container }}">
         {{ $slot }}
     </div>
