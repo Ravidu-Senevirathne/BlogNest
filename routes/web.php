@@ -66,4 +66,20 @@ Route::prefix('admin')->group(function () {
     });
 });
 
+// Social Authentication Routes
+Route::get('/auth/{provider}/redirect', [App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToProvider'])
+    ->name('social.redirect')
+    ->where('provider', 'github|google');
+
+Route::get('/auth/{provider}/callback', [App\Http\Controllers\Auth\SocialAuthController::class, 'handleProviderCallback'])
+    ->name('social.callback')
+    ->where('provider', 'github|google');
+
+// Role Selection After Social Auth
+Route::get('/auth/role-selection', [App\Http\Controllers\Auth\SocialAuthController::class, 'showRoleSelectionForm'])
+    ->name('social.role.selection');
+
+Route::post('/auth/role-selection', [App\Http\Controllers\Auth\SocialAuthController::class, 'storeUserWithRole'])
+    ->name('social.role.store');
+
 require __DIR__ . '/auth.php';
