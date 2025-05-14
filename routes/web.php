@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,47 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Role-based routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:editor'])->group(function () {
+    Route::get('/editor/dashboard', function () {
+        return view('editor.dashboard');
+    })->name('editor.dashboard');
+});
+
+Route::middleware(['auth', 'role:reader'])->group(function () {
+    Route::get('/reader/dashboard', function () {
+        return view('reader.dashboard');
+    })->name('reader.dashboard');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// Admin routes
+Route::prefix('admin')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+        Route::post('login', [AuthController::class, 'login'])->name('admin.login.submit');
+    });
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('admin.dashboard');
+        });
+        Route::get('dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+        Route::post('logout', [AuthController::class, 'logout'])->name('admin.logout');
+    });
+});
+
+require __DIR__ . '/auth.php';

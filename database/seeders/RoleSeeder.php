@@ -1,0 +1,39 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+class RoleSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // Create roles
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'editor']);
+        Role::create(['name' => 'reader']);
+
+        // Create permissions for future use
+        Permission::create(['name' => 'create posts']);
+        Permission::create(['name' => 'edit posts']);
+        Permission::create(['name' => 'delete posts']);
+        Permission::create(['name' => 'publish posts']);
+
+        // Assign permissions to roles
+        $editorRole = Role::findByName('editor');
+        $editorRole->givePermissionTo('create posts');
+        $editorRole->givePermissionTo('edit posts');
+        $editorRole->givePermissionTo('delete posts');
+
+        $adminRole = Role::findByName('admin');
+        $adminRole->givePermissionTo('create posts');
+        $adminRole->givePermissionTo('edit posts');
+        $adminRole->givePermissionTo('delete posts');
+        $adminRole->givePermissionTo('publish posts');
+    }
+}
