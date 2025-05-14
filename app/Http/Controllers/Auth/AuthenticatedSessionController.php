@@ -14,6 +14,8 @@ class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
+     *
+     * @return \Illuminate\View\View
      */
     public function create(): View
     {
@@ -22,33 +24,50 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     *
+     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        session()->regenerate();
 
+        return $this->redirectToDashboard();
+    }
+
+    /**
+     * Redirect the user to their appropriate dashboard based on role.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function redirectToDashboard(): RedirectResponse
+    {
         $user = Auth::user();
 
         if ($user->hasRole('admin')) {
             return redirect()->intended(route('admin.dashboard'));
-        } elseif ($user->hasRole('editor')) {
-            return redirect()->intended(route('editor.dashboard'));
-        } else {
-            return redirect()->intended(route('reader.dashboard'));
         }
+
+        if ($user->hasRole('editor')) {
+            return redirect()->intended(route('editor.dashboard'));
+        }
+
+        return redirect()->intended(route('reader.dashboard'));
     }
 
     /**
      * Destroy an authenticated session.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

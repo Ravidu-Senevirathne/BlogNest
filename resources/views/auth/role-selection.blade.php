@@ -1,5 +1,6 @@
 <x-guest-layout>
     <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 max-w-md w-full mx-auto">
+        <!-- Header section -->
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">BlogNest</h1>
@@ -10,6 +11,7 @@
             </div>
         </div>
         
+        <!-- Title section -->
         <div class="mb-6">
             <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">Select Your Role</h2>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Choose how you want to use BlogNest</p>
@@ -19,7 +21,7 @@
             @csrf
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <!-- Editor Role -->
+                <!-- Editor Role Option -->
                 <div>
                     <input type="radio" id="editor" name="role" value="editor" class="hidden peer" required>
                     <label for="editor" class="flex flex-col p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-indigo-600 dark:peer-checked:border-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -33,7 +35,7 @@
                     </label>
                 </div>
 
-                <!-- Reader Role -->
+                <!-- Reader Role Option -->
                 <div>
                     <input type="radio" id="reader" name="role" value="reader" class="hidden peer" checked>
                     <label for="reader" class="flex flex-col p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-indigo-600 dark:peer-checked:border-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -62,31 +64,38 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const editorLabel = document.querySelector('label[for="editor"]');
-            const readerLabel = document.querySelector('label[for="reader"]');
-            const editorRadio = document.getElementById('editor');
-            const readerRadio = document.getElementById('reader');
+            // Get DOM elements
+            const roles = {
+                editor: {
+                    radio: document.getElementById('editor'),
+                    label: document.querySelector('label[for="editor"]')
+                },
+                reader: {
+                    radio: document.getElementById('reader'),
+                    label: document.querySelector('label[for="reader"]')
+                }
+            };
+            
+            // CSS classes for highlighting selected role
+            const highlightClasses = ['bg-indigo-50', 'dark:bg-gray-700'];
             
             // Set initial highlight based on default selection
-            if (editorRadio.checked) {
-                editorLabel.classList.add('bg-indigo-50', 'dark:bg-gray-700');
-            } else if (readerRadio.checked) {
-                readerLabel.classList.add('bg-indigo-50', 'dark:bg-gray-700');
+            const initialRole = roles.editor.radio.checked ? 'editor' : 'reader';
+            roles[initialRole].label.classList.add(...highlightClasses);
+            
+            // Handle role selection
+            function selectRole(role) {
+                // Update visual state
+                roles[role].label.classList.add(...highlightClasses);
+                roles[role === 'editor' ? 'reader' : 'editor'].label.classList.remove(...highlightClasses);
+                
+                // Update form state
+                roles[role].radio.checked = true;
             }
             
-            // Update highlight when editor is clicked
-            editorLabel.addEventListener('click', function() {
-                editorLabel.classList.add('bg-indigo-50', 'dark:bg-gray-700');
-                readerLabel.classList.remove('bg-indigo-50', 'dark:bg-gray-700');
-                editorRadio.checked = true;
-            });
-            
-            // Update highlight when reader is clicked
-            readerLabel.addEventListener('click', function() {
-                readerLabel.classList.add('bg-indigo-50', 'dark:bg-gray-700');
-                editorLabel.classList.remove('bg-indigo-50', 'dark:bg-gray-700');
-                readerRadio.checked = true;
-            });
+            // Add click event listeners
+            roles.editor.label.addEventListener('click', () => selectRole('editor'));
+            roles.reader.label.addEventListener('click', () => selectRole('reader'));
         });
     </script>
 </x-guest-layout>
