@@ -42,7 +42,22 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function createFakeImage($name = 'test.jpg', $width = 800, $height = 600)
 {
-    // ..
+    return \Illuminate\Http\UploadedFile::fake()->image($name, $width, $height);
+}
+
+function asAdmin()
+{
+    return actingAs(\App\Models\User::factory()->create()->assignRole('admin'));
+}
+
+function asEditor()
+{
+    return actingAs(\App\Models\User::factory()->create()->assignRole('editor'));
+}
+
+function asReader()
+{
+    return actingAs(\App\Models\User::factory()->create()->assignRole('reader'));
 }

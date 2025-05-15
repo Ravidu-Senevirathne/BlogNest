@@ -24,7 +24,7 @@
                         <!-- Title Field -->
                         <div>
                             <x-input-label class="dark:text-gray-200" for="title" :value="__('Title')" />
-                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
+                            <x-text-input id="title" class="block mt-1 w-full dark:text-black" type="text" name="title" :value="old('title')" required autofocus />
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
@@ -32,7 +32,7 @@
                         <div>
                             <x-input-label class="dark:text-gray-200" for="slug" :value="__('Slug')" />
                             <div class="flex items-center">
-                                <x-text-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug')" required />
+                                <x-text-input id="slug" class="block mt-1 w-full dark:text-black" type="text" name="slug" :value="old('slug')" required />
                                 <button type="button" id="generate-slug" class="ml-2 px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">
                                     Generate
                                 </button>
@@ -170,4 +170,7 @@
             });
         </script>
     </x-slot>
+    
+    <!-- Override the footer slot to remove it -->
+    <x-slot name="footer"></x-slot>
 </x-app-layout>

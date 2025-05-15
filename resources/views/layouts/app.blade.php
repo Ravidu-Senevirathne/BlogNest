@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        {!! $meta ?? '' !!}
+        
         <title>{{ $title ?? config('app.name', 'BlogNest') }}</title>
 
         <!-- Fonts -->
@@ -38,7 +40,15 @@
             <main>
                 {{ $slot }}
             </main>
+            
+            <!-- Page Footer -->
+            @if (!isset($footer))
+                @include('layouts.footer')
+            @else
+                {{ $footer }}
+            @endif
         </div>
-        {{ $scripts ?? '' }}
+        
+        @stack('scripts')
     </body>
 </html>
