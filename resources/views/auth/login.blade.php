@@ -5,9 +5,7 @@
                 <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">BlogNest</h1>
                 <p class="text-gray-600 dark:text-gray-300 mt-2">Welcome back to your writing journey</p>
             </div>
-            <div>
-                <x-theme.toggle />
-            </div>
+          
         </div>
         
         <!-- Session Status -->

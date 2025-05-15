@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Editor\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,18 +24,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Blog routes
+Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+
 /**
  * Authentication Routes
  */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $user = auth()->user();
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('editor')) {
+            return redirect()->route('editor.dashboard');
+        } else {
+            return redirect()->route('reader.dashboard');
+        }
     })->name('dashboard');
 });
 
-/**
- * Role-Based Dashboard Routes
- */
+
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
@@ -47,6 +57,11 @@ Route::middleware(['auth', 'role:editor'])->group(function () {
     Route::get('/editor/dashboard', function () {
         return view('editor.dashboard');
     })->name('editor.dashboard');
+
+    // Post management routes
+    Route::resource('/editor/posts', PostController::class, [
+        'as' => 'editor'
+    ]);
 });
 
 // Reader routes
@@ -56,9 +71,7 @@ Route::middleware(['auth', 'role:reader'])->group(function () {
     })->name('reader.dashboard');
 });
 
-/**
- * User Profile Routes
- */
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

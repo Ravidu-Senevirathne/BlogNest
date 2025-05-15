@@ -13,16 +13,17 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create roles
+        // roles
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'editor']);
         Role::create(['name' => 'reader']);
 
-        // Create permissions for future use
+        //  permissions 
         Permission::create(['name' => 'create posts']);
         Permission::create(['name' => 'edit posts']);
         Permission::create(['name' => 'delete posts']);
         Permission::create(['name' => 'publish posts']);
+        Permission::create(['name'=>'comment posts']);
 
         // Assign permissions to roles
         $editorRole = Role::findByName('editor');
@@ -35,5 +36,9 @@ class RoleSeeder extends Seeder
         $adminRole->givePermissionTo('edit posts');
         $adminRole->givePermissionTo('delete posts');
         $adminRole->givePermissionTo('publish posts');
+
+        $readerRole=Role::findByName('reader');
+        $readerRole->givePermissionTo('comment posts');
+
     }
 }

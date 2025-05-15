@@ -15,15 +15,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
         <!-- Dark mode initialization script -->
-        <script>
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        </script>
+        <x-theme.script />
     </head>
-    <body class="font-sans text-gray-900 antialiased dark:text-gray-100">
+    <body class="font-sans antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
             <div>
                 <a href="/" class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">

@@ -5,9 +5,7 @@
                 <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">BlogNest</h1>
                 <p class="text-gray-600 dark:text-gray-300 mt-2">Start your writing journey today</p>
             </div>
-            <div>
-                <x-theme.toggle />
-            </div>
+            
         </div>
         
         <form method="POST" action="{{ route('register') }}" class="space-y-5">

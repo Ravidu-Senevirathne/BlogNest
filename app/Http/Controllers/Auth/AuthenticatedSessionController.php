@@ -34,27 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         session()->regenerate();
 
-        return $this->redirectToDashboard();
-    }
-
-    /**
-     * Redirect the user to their appropriate dashboard based on role.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function redirectToDashboard(): RedirectResponse
-    {
-        $user = Auth::user();
-
-        if ($user->hasRole('admin')) {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
-        if ($user->hasRole('editor')) {
-            return redirect()->intended(route('editor.dashboard'));
-        }
-
-        return redirect()->intended(route('reader.dashboard'));
+        return redirect()->intended(RouteServiceProvider::home());
     }
 
     /**

@@ -17,7 +17,7 @@
                     <x-theme.toggle />
                 </div>
                 @auth
-                    <a href="{{ route('dashboard') }}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    <a href="{{ auth()->user()->hasRole('editor') ? route('editor.dashboard') : (auth()->user()->hasRole('admin') ? route('admin.dashboard') : route('reader.dashboard')) }}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium">
                         Dashboard
                     </a>
                 @else
