@@ -11,16 +11,54 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="auth()->check() ? (auth()->user()->hasRole('editor') ? route('editor.dashboard') : (auth()->user()->hasRole('admin') ? route('admin.dashboard') : route('reader.dashboard'))) : route('dashboard')" :active="request()->routeIs('dashboard') || request()->routeIs('editor.dashboard') || request()->routeIs('reader.dashboard') || request()->routeIs('admin.dashboard')">
-                        {{ __('Dashboard') }}
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <!-- Change Dashboard link to direct role-specific route -->
+                    @auth
+                        @if(auth()->user()->hasRole('admin'))
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                        @elseif(auth()->user()->hasRole('editor'))
+                            <x-nav-link :href="route('editor.dashboard')" :active="request()->routeIs('editor.dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                        @else
+                            <x-nav-link :href="route('reader.dashboard')" :active="request()->routeIs('reader.dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
+                    
+                    <!-- Blog Link (available to all users) -->
+                    <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">
+                        {{ __('Browse Posts') }}
                     </x-nav-link>
-                  
-                    @if(auth()->check() && auth()->user()->hasRole('editor'))
+                    
+                    <!-- Reader Links -->
+                    @role('reader|admin')
+                        <!-- Removed duplicate "Browse Posts" link since Dashboard already points to reader.dashboard -->
+                        <x-nav-link :href="route('reader.bookmarks')" :active="request()->routeIs('reader.bookmarks')">
+                            {{ __('My Bookmarks') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reader.search')" :active="request()->routeIs('reader.search')">
+                            {{ __('Search') }}
+                        </x-nav-link>
+                    @endrole
+                    
+                    <!-- Editor-specific Links -->
+                    @role('editor')
                         <x-nav-link :href="route('editor.posts.index')" :active="request()->routeIs('editor.posts.*')">
                             {{ __('My Posts') }}
                         </x-nav-link>
-                    @endif
+                        <x-nav-link :href="route('editor.posts.create')" :active="request()->routeIs('editor.posts.create')">
+                            {{ __('Create Post') }}
+                        </x-nav-link>
+                    @endrole
+                    
+                    <!-- Admin-specific Links -->
+                    @role('admin')
+                        <!-- Add your admin-specific links here -->
+                    @endrole
                 </div>
             </div>
 
@@ -78,19 +116,55 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="auth()->check() ? (auth()->user()->hasRole('editor') ? route('editor.dashboard') : (auth()->user()->hasRole('admin') ? route('admin.dashboard') : route('reader.dashboard'))) : route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            <!-- Update mobile Dashboard link too -->
+            @auth
+                @if(auth()->user()->hasRole('admin'))
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                @elseif(auth()->user()->hasRole('editor'))
+                    <x-responsive-nav-link :href="route('editor.dashboard')" :active="request()->routeIs('editor.dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                @else
+                    <x-responsive-nav-link :href="route('reader.dashboard')" :active="request()->routeIs('reader.dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                @endif
+            @endauth
+            
+            <!-- Blog Link (Mobile - available to all users) -->
             <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">
-                {{ __('Blog') }}
+                {{ __('Browse Posts') }}
             </x-responsive-nav-link>
-            @if(auth()->check() && auth()->user()->hasRole('editor'))
+            
+            <!-- Reader Links -->
+            @role('reader|admin')
+                <!-- Removed duplicate "Browse Posts" link in mobile menu as well -->
+                <x-responsive-nav-link :href="route('reader.bookmarks')" :active="request()->routeIs('reader.bookmarks')">
+                    {{ __('My Bookmarks') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reader.search')" :active="request()->routeIs('reader.search')">
+                    {{ __('Search') }}
+                </x-responsive-nav-link>
+            @endrole
+            
+            <!-- Editor-specific Links (Mobile) -->
+            @role('editor')
                 <x-responsive-nav-link :href="route('editor.posts.index')" :active="request()->routeIs('editor.posts.*')">
                     {{ __('My Posts') }}
                 </x-responsive-nav-link>
-            @endif
+                <x-responsive-nav-link :href="route('editor.posts.create')" :active="request()->routeIs('editor.posts.create')">
+                    {{ __('Create Post') }}
+                </x-responsive-nav-link>
+            @endrole
+            
+            <!-- Admin-specific Links (Mobile) -->
+            @role('admin')
+                <!-- Add your responsive admin-specific links here -->
+            @endrole
         </div>
-
+        
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">

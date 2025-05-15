@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -13,32 +14,63 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // roles
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'editor']);
-        Role::create(['name' => 'reader']);
+        // Create roles
+        $adminRole = Role::create(['name' => 'admin']);
+        $editorRole = Role::create(['name' => 'editor']);
+        $readerRole = Role::create(['name' => 'reader']);
 
-        //  permissions 
-        Permission::create(['name' => 'create posts']);
-        Permission::create(['name' => 'edit posts']);
-        Permission::create(['name' => 'delete posts']);
-        Permission::create(['name' => 'publish posts']);
-        Permission::create(['name'=>'comment posts']);
+        // Create permissions
+        $permissions = [
+            // Admin permissions
+            'manage users',
+            'manage roles',
+            'manage settings',
 
-        // Assign permissions to roles
-        $editorRole = Role::findByName('editor');
-        $editorRole->givePermissionTo('create posts');
-        $editorRole->givePermissionTo('edit posts');
-        $editorRole->givePermissionTo('delete posts');
+            // Editor permissions
+            'create posts',
+            'edit posts',
+            'delete posts',
+            'publish posts',
+            'manage categories',
+            'manage tags',
 
-        $adminRole = Role::findByName('admin');
-        $adminRole->givePermissionTo('create posts');
-        $adminRole->givePermissionTo('edit posts');
-        $adminRole->givePermissionTo('delete posts');
-        $adminRole->givePermissionTo('publish posts');
+            // Reader permissions
+            'view posts',
+            'create comments',
+            'delete own comments',
+            'like posts',
+            'bookmark posts',
+        ];
 
-        $readerRole=Role::findByName('reader');
-        $readerRole->givePermissionTo('comment posts');
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
 
+        // Assign permissions to admin role
+        $adminRole->givePermissionTo(Permission::all());
+
+        // Assign permissions to editor role
+        $editorRole->givePermissionTo([
+            'create posts',
+            'edit posts',
+            'delete posts',
+            'publish posts',
+            'manage categories',
+            'manage tags',
+            'view posts',
+            'create comments',
+            'delete own comments',
+            'like posts',
+            'bookmark posts',
+        ]);
+
+        // Assign permissions to reader role
+        $readerRole->givePermissionTo([
+            'view posts',
+            'create comments',
+            'delete own comments',
+            'like posts',
+            'bookmark posts',
+        ]);
     }
 }

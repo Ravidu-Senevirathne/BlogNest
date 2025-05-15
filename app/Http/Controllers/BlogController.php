@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -13,13 +14,15 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('status', 'approved')
-            ->orderBy('created_at', 'desc')
+        $posts = Post::with(['user', 'category', 'tags'])
+            ->published()
+            ->latest()
             ->paginate(9);
 
-        $categories = Category::all();
+        $categories = Category::withCount('posts')->orderBy('name')->get();
+        $tags = Tag::withCount('posts')->orderBy('name')->get();
 
-        return view('blog.index', compact('posts', 'categories'));
+        return view('blog.index', compact('posts', 'categories', 'tags'));
     }
 
     /**
@@ -27,10 +30,18 @@ class BlogController extends Controller
      */
     public function show($slug)
     {
-        $post = Post::where('slug', $slug)
-            ->where('status', 'approved')
+        $post = Post::with(['user', 'category', 'tags', 'comments.user'])
+            ->published()
+            ->where('slug', $slug)
             ->firstOrFail();
 
-        return view('blog.show', compact('post'));
+        $relatedPosts = Post::published()
+            ->where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('blog.show', compact('post', 'relatedPosts'));
     }
 }

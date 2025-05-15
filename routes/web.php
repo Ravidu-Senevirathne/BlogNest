@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 // Blog routes
-Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/reader/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 /**
@@ -65,10 +65,16 @@ Route::middleware(['auth', 'role:editor'])->group(function () {
 });
 
 // Reader routes
-Route::middleware(['auth', 'role:reader'])->group(function () {
-    Route::get('/reader/dashboard', function () {
-        return view('reader.dashboard');
-    })->name('reader.dashboard');
+Route::middleware(['auth', 'role:reader|editor|admin'])->prefix('reader')->name('reader.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Reader\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/bookmarks', [App\Http\Controllers\Reader\DashboardController::class, 'bookmarks'])->name('bookmarks');
+    Route::get('/search', [App\Http\Controllers\Reader\DashboardController::class, 'search'])->name('search');
+
+    // Post interaction routes
+    Route::post('/posts/{post}/comments', [App\Http\Controllers\Reader\CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [App\Http\Controllers\Reader\CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::post('/posts/{post}/like', [App\Http\Controllers\Reader\LikeController::class, 'toggle'])->name('like.toggle');
+    Route::post('/posts/{post}/bookmark', [App\Http\Controllers\Reader\BookmarkController::class, 'toggle'])->name('bookmark.toggle');
 });
 
 

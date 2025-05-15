@@ -22,7 +22,7 @@
                             <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300 mb-2">Quick Actions</h4>
                             <ul class="space-y-2 text-gray-700 dark:text-gray-300">
                                 <li>
-                                    <a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+                                    <a href="{{ route('blog.index') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400">
                                         <span class="inline-block w-5">→</span> Browse Articles
                                     </a>
                                 </li>
@@ -37,7 +37,7 @@
                         <div class="bg-indigo-50 dark:bg-gray-700 p-5 rounded-lg border-l-4 border-indigo-500">
                             <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300 mb-2">Recent Articles</h4>
                             <p class="text-gray-700 dark:text-gray-300">Stay updated with the latest content.</p>
-                            <a href="/blog" class="block mt-4 text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+                            <a href="{{ route('blog.index') }}" class="block mt-4 text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
                                 View All Articles
                             </a>
                         </div>

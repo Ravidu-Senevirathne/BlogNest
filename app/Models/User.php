@@ -56,4 +56,78 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * Get all comments made by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get all posts liked by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likes')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all posts bookmarked by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bookmarkedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'bookmarks')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all likes by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
+     * Get all bookmarks created by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    /**
+     * Check if the user has liked a specific post.
+     *
+     * @param int $postId
+     * @return bool
+     */
+    public function hasLiked(int $postId): bool
+    {
+        return $this->likes()->where('post_id', $postId)->exists();
+    }
+
+    /**
+     * Check if the user has bookmarked a specific post.
+     *
+     * @param int $postId
+     * @return bool
+     */
+    public function hasBookmarked(int $postId): bool
+    {
+        return $this->bookmarkedPosts()->where('post_id', $postId)->exists();
+    }
 }
