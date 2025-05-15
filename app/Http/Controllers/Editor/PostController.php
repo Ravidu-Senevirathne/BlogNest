@@ -36,7 +36,6 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:posts',
             'content' => 'required|string',
-            'summary' => 'nullable|string',
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'tags' => 'nullable|string',
@@ -47,7 +46,7 @@ class PostController extends Controller
         $post->title = $validated['title'];
         $post->slug = $validated['slug'];
         $post->content = $validated['content'];
-        $post->summary = $validated['summary'] ?? null;
+        
         $post->category_id = $validated['category_id'] ?? null;
 
         $post->user_id = auth()->id();
@@ -113,7 +112,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
             'content' => 'required|string',
-            'summary' => 'nullable|string',
+           
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'tags' => 'nullable|string',
@@ -123,7 +122,7 @@ class PostController extends Controller
         $post->title = $validated['title'];
         $post->slug = $validated['slug'];
         $post->content = $validated['content'];
-        $post->summary = $validated['summary'] ?? null;
+        
         $post->category_id = $validated['category_id'] ?? null;
         $post->status = $validated['status'];
 

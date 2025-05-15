@@ -48,19 +48,14 @@
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
-                        <!-- Summary Field -->
-                        <div>
-                            <x-input-label for="summary" :value="__('Summary')" />
-                            <textarea id="summary" name="summary" rows="3" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600">{{ old('summary') }}</textarea>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">A short summary of the post (optional)</p>
-                            <x-input-error :messages="$errors->get('summary')" class="mt-2" />
-                        </div>
-
+          
                         <!-- Category Field -->
                         <div>
                             <x-input-label for="category_id" :value="__('Category')" />
                             <select id="category_id" name="category_id" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600">
                                 <option value="">Select Category</option>
+                                {{-- Example static options, remove if using dynamic categories --}}
+                             
                                 @foreach(\App\Models\Category::all() as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
@@ -86,6 +81,8 @@
                             <x-input-error :messages="$errors->get('tags')" class="mt-2" />
                         </div>
 
+                        <!-- Suggested Categories -->
+                        <div id="suggested-categories" class="mt-2"></div>
                   
                         <!-- Submit Button -->
                         <div class="flex items-center gap-4">
@@ -128,6 +125,47 @@
                 // Generate slug on button click
                 generateSlugBtn.addEventListener('click', function() {
                     slugInput.value = createSlug(titleInput.value);
+                });
+
+                // Suggested Categories Script
+                const tagsInput = document.getElementById('tags');
+                const categorySelect = document.getElementById('category_id');
+                const suggestedDiv = document.getElementById('suggested-categories');
+                // Get categories from the select options
+                const categories = Array.from(categorySelect.options)
+                    .filter(opt => opt.value)
+                    .map(opt => ({id: opt.value, name: opt.textContent.trim()}));
+
+                function suggestCategories() {
+                    const tags = tagsInput.value.toLowerCase().split(',').map(t => t.trim()).filter(Boolean);
+                    let matches = [];
+                    if (tags.length) {
+                        matches = categories.filter(cat =>
+                            tags.some(tag => cat.name.toLowerCase().includes(tag))
+                        );
+                    }
+                    if (!matches.length) {
+                        const title = titleInput.value.toLowerCase();
+                        matches = categories.filter(cat =>
+                            cat.name.toLowerCase().split(' ').some(word => title.includes(word))
+                        );
+                    }
+                    if (matches.length) {
+                        suggestedDiv.innerHTML = '<div class="text-sm text-gray-600 dark:text-gray-300 mb-1">Suggested Categories:</div>' +
+                            matches.map(cat =>
+                                `<button type="button" class="suggested-cat px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-200 rounded mr-2 mb-1 text-xs" data-id="${cat.id}">${cat.name}</button>`
+                            ).join('');
+                    } else {
+                        suggestedDiv.innerHTML = '';
+                    }
+                }
+
+                tagsInput.addEventListener('input', suggestCategories);
+                titleInput.addEventListener('input', suggestCategories);
+                suggestedDiv.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('suggested-cat')) {
+                        categorySelect.value = e.target.getAttribute('data-id');
+                    }
                 });
             });
         </script>
