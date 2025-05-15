@@ -23,14 +23,14 @@
                         
                         <!-- Title Field -->
                         <div>
-                            <x-input-label for="title" :value="__('Title')" />
+                            <x-input-label class="dark:text-gray-200" for="title" :value="__('Title')" />
                             <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
                         <!-- Slug Field -->
                         <div>
-                            <x-input-label for="slug" :value="__('Slug')" />
+                            <x-input-label class="dark:text-gray-200" for="slug" :value="__('Slug')" />
                             <div class="flex items-center">
                                 <x-text-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug')" required />
                                 <button type="button" id="generate-slug" class="ml-2 px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">
@@ -43,7 +43,7 @@
 
                         <!-- Content Field with TinyMCE -->
                         <div>
-                            <x-input-label for="content" :value="__('Content')" class="mb-1" />
+                            <x-input-label  for="content" :value="__('Content')" class="mb-1 dark:text-gray-200"/>
                             <textarea id="content" name="content" class="tinymce-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm">{{ old('content') }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
@@ -51,7 +51,7 @@
           
                         <!-- Category Field -->
                         <div>
-                            <x-input-label for="category_id" :value="__('Category')" />
+                            <x-input-label for="category_id" :value="__('Category')" class="dark:text-gray-200" />
                             <select id="category_id" name="category_id" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600">
                                 <option value="">Select Category</option>
                                 {{-- Example static options, remove if using dynamic categories --}}
@@ -67,7 +67,7 @@
 
                         <!-- Image Field -->
                         <div>
-                            <x-input-label for="image" :value="__('Featured Image')" />
+                            <x-input-label for="image" :value="__('Featured Image')" class="dark:text-gray-200" />
                             <input id="image" type="file" name="image" class="block mt-1 w-full border border-gray-300 dark:border-gray-600 p-2 rounded-md" />
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Upload a featured image for your post (optional)</p>
                             <x-input-error :messages="$errors->get('image')" class="mt-2" />
@@ -75,7 +75,7 @@
 
                         <!-- Tags Field -->
                         <div>
-                            <x-input-label for="tags" :value="__('Tags')" />
+                            <x-input-label class="dark:text-gray-200" for="tags" :value="__('Tags')" />
                             <input id="tags" type="text" name="tags" value="{{ old('tags') }}" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600" />
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Enter tags separated by commas</p>
                             <x-input-error :messages="$errors->get('tags')" class="mt-2" />
@@ -86,7 +86,7 @@
                   
                         <!-- Submit Button -->
                         <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Create Post') }}</x-primary-button>
+                            <x-primary-button class="dark:bg-purple-500">{{ __('Create Post') }}</x-primary-button>
                             <a href="{{ route('editor.posts.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
                                 {{ __('Cancel') }}
                             </a>

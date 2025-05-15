@@ -28,16 +28,16 @@
                             <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300 mb-2">Content Stats</h4>
                             <div class="mt-3 space-y-1 text-gray-700 dark:text-gray-300">
                                 <div class="flex justify-between">
-                                    <span>Published Posts</span>
-                                    <span class="font-medium">0</span>
+                                    <span>Approved</span>
+                                    <span class="font-medium">{{ Auth::user()->posts()->where('status', 'approved')->count() }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span>Draft Posts</span>
-                                    <span class="font-medium">0</span>
+                                    <span>Pending</span>
+                                    <span class="font-medium">{{ Auth::user()->posts()->where('status', 'pending')->count() }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span>Total Views</span>
-                                    <span class="font-medium">0</span>
+                                    <span>Rejected</span>
+                                    <span class="font-medium">{{ Auth::user()->posts()->where('status', 'rejected')->count() }}</span>
                                 </div>
                             </div>
                         </div>

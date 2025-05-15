@@ -15,9 +15,7 @@
                     <x-nav-link :href="auth()->check() ? (auth()->user()->hasRole('editor') ? route('editor.dashboard') : (auth()->user()->hasRole('admin') ? route('admin.dashboard') : route('reader.dashboard'))) : route('dashboard')" :active="request()->routeIs('dashboard') || request()->routeIs('editor.dashboard') || request()->routeIs('reader.dashboard') || request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">
-                        {{ __('Blog') }}
-                    </x-nav-link>
+                  
                     @if(auth()->check() && auth()->user()->hasRole('editor'))
                         <x-nav-link :href="route('editor.posts.index')" :active="request()->routeIs('editor.posts.*')">
                             {{ __('My Posts') }}
