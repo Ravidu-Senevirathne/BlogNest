@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -65,6 +64,33 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
+
 # BlogNest
->>>>>>> a2fa6c5a8259f110812333da52c0c2f023e6457e
+
+## Queue Processing
+
+BlogNest uses Laravel's queue system for background processing tasks like image processing.
+
+### Configuration
+
+- Set `QUEUE_CONNECTION=database` in your `.env` file
+- Run `php artisan queue:work` to process jobs
+
+### Production Deployment
+
+Use a process manager like Supervisor to keep the queue worker running:
+
+```
+[program:blognest-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/blognest/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/path/to/worker.log
+stopwaitsecs=3600
+```
