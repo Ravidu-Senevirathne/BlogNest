@@ -3,6 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Editor\PostController;
 
@@ -20,9 +25,7 @@ use App\Http\Controllers\Editor\PostController;
 /**
  * Public Routes
  */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Blog routes
 Route::get('/reader/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
@@ -99,10 +102,23 @@ Route::prefix('admin')->group(function () {
         Route::get('/', function () {
             return redirect()->route('admin.dashboard');
         });
-        Route::get('dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('dashboard', [AnalyticsController::class, 'index'])->name('admin.dashboard');
         Route::post('logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+        // User management
+        Route::resource('users', UserController::class, ['as' => 'admin']);
+        Route::post('users/{user}/roles', [UserController::class, 'updateRoles'])->name('admin.users.roles');
+
+        // Post management
+        Route::resource('posts', AdminPostController::class, ['as' => 'admin']);
+        Route::post('posts/{post}/approve', [AdminPostController::class, 'approve'])->name('admin.posts.approve');
+        Route::post('posts/{post}/reject', [AdminPostController::class, 'reject'])->name('admin.posts.reject');
+
+        // Category management
+        Route::resource('categories', CategoryController::class, ['as' => 'admin']);
+
+        // Tag management
+        Route::resource('tags', TagController::class, ['as' => 'admin']);
     });
 });
 

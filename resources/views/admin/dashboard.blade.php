@@ -67,13 +67,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Dashboard</a>
+                        <a class="nav-link active" href="{{ route('admin.dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Posts</a>
+                        <a class="nav-link" href="{{ route('admin.users.index') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Users</a>
+                        <a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.categories.index') }}">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.tags.index') }}">Tags</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -99,6 +105,99 @@
             <div class="col">
                 <h1>Welcome to Admin Dashboard</h1>
                 <p>Hello, {{ Auth::user()->name }}!</p>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <h1 class="display-4">{{ $totalUsers }}</h1>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-sm">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Posts</h5>
+                        <h1 class="display-4">{{ $totalPosts }}</h1>
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-primary btn-sm">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Comments</h5>
+                        <h1 class="display-4">{{ $totalComments }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Posts</h5>
+                        <h1 class="display-4">{{ $pendingPosts }}</h1>
+                        <a href="{{ route('admin.posts.index', ['status' => 'pending']) }}" class="btn btn-warning btn-sm">Review</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recent Posts</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            @foreach($recentPosts as $post)
+                                <a href="{{ route('admin.posts.edit', $post) }}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ $post->title }}</h6>
+                                        <small>{{ $post->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-1">By: {{ $post->user->name }}</p>
+                                    <small class="text-{{ $post->status == 'approved' ? 'success' : ($post->status == 'pending' ? 'warning' : 'danger') }}">
+                                        Status: {{ ucfirst($post->status) }}
+                                    </small>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-primary btn-sm">View All Posts</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recent Users</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            @foreach($recentUsers as $user)
+                                <a href="{{ route('admin.users.edit', $user) }}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ $user->name }}</h6>
+                                        <small>{{ $user->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ $user->email }}</p>
+                                    <small>
+                                        Roles: {{ $user->roles->pluck('name')->implode(', ') }}
+                                    </small>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-sm">View All Users</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

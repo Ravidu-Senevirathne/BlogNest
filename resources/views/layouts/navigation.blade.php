@@ -57,7 +57,18 @@
                     
                     <!-- Admin-specific Links -->
                     @role('admin')
-                        <!-- Add your admin-specific links here -->
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.posts.index')" :active="request()->routeIs('admin.posts.*')">
+                            {{ __('Posts') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                            {{ __('Categories') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
+                            {{ __('Tags') }}
+                        </x-nav-link>
                     @endrole
                 </div>
             </div>
@@ -161,7 +172,18 @@
             
             <!-- Admin-specific Links (Mobile) -->
             @role('admin')
-                <!-- Add your responsive admin-specific links here -->
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.posts.index')" :active="request()->routeIs('admin.posts.*')">
+                    {{ __('Posts') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                    {{ __('Categories') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.*')">
+                    {{ __('Tags') }}
+                </x-responsive-nav-link>
             @endrole
         </div>
         

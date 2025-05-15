@@ -49,7 +49,9 @@ function createFakeImage($name = 'test.jpg', $width = 800, $height = 600)
 
 function asAdmin()
 {
-    return actingAs(\App\Models\User::factory()->create()->assignRole('admin'));
+    $user = \App\Models\User::factory()->create();
+    $user->assignRole('admin');
+    return actingAs($user);
 }
 
 function asEditor()

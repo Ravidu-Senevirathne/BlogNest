@@ -18,7 +18,7 @@
                 </div>
                 @auth
                     <a href="{{ auth()->user()->hasRole('editor') ? route('editor.dashboard') : (auth()->user()->hasRole('admin') ? route('admin.dashboard') : route('reader.dashboard')) }}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium">
-                        Dashboard
+                        {{ auth()->user()->hasRole('admin') ? 'Admin Dashboard' : 'Dashboard' }}
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 text-sm font-medium">

@@ -22,6 +22,11 @@ class Post extends Model
         'category_id',
         'user_id',
         'status',
+        'is_featured',
+    ];
+
+    protected $casts = [
+        'is_featured' => 'boolean',
     ];
 
     /**
@@ -120,5 +125,13 @@ class Post extends Model
     {
         // Update to check for 'approved' status
         return $this->status === 'approved';
+    }
+
+    /**
+     * Get the user who authored the post (alias for user relationship)
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

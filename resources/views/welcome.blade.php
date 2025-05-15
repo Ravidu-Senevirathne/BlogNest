@@ -17,7 +17,8 @@
     <main>
         <x-hero />
         <x-features />
-        <x-recent-posts />
+        {{-- Replace the static recent-posts component with the dynamic one --}}
+        <x-recent-posts :posts="$featuredPosts" />
         <x-cta />
     </main>
     
