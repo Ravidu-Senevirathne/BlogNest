@@ -13,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * The path to your application's "home" route.
      *
-     * Typically, users are redirected here after authentication.
+     * This is used by the RedirectIfAuthenticated middleware.
      *
      * @var string
      */
@@ -24,9 +24,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        RateLimiter::for(
+            'api',
+            fn(Request $request) =>
+            Limit::perMinute(60)->by($request->user()?->id ?: $request->ip())
+        );
 
         $this->routes(function () {
             Route::middleware('api')
@@ -36,5 +38,32 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+    }
+
+    /**
+     * Get the home route based on user role.
+     * 
+     * @param \App\Models\User|null $user
+     * @return string
+     */
+    public static function home($user = null)
+    {
+        if (!$user) {
+            $user = auth()->user();
+        }
+
+        if (!$user) {
+            return self::HOME;
+        }
+
+        if ($user->hasRole('admin')) {
+            return route('admin.dashboard');
+        } elseif ($user->hasRole('editor')) {
+            return route('editor.dashboard');
+        } elseif ($user->hasRole('reader')) {
+            return route('reader.dashboard');
+        }
+
+        return self::HOME;
     }
 }
