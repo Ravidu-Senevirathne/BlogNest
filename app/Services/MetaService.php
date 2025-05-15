@@ -147,9 +147,10 @@ class MetaService
      * @param string $publishedTime
      * @param string $modifiedTime
      * @param array $tags
+     * @param string|null $section
      * @return $this
      */
-    public function setArticleMeta(string $author, string $publishedTime, string $modifiedTime = null, array $tags = [])
+    public function setArticleMeta(string $author, string $publishedTime, string $modifiedTime = null, array $tags = [], ?string $section = null)
     {
         $this->setType('article');
         $this->setAuthor($author);
@@ -158,6 +159,7 @@ class MetaService
             'published_time' => $publishedTime,
             'modified_time' => $modifiedTime ?? $publishedTime,
             'tags' => $tags,
+            'section' => $section,
         ];
 
         return $this;
@@ -202,6 +204,7 @@ class MetaService
         $html .= '<meta property="og:site_name" content="' . e($this->siteName) . '">' . PHP_EOL;
         $html .= '<meta property="og:type" content="' . e($this->type) . '">' . PHP_EOL;
         $html .= '<meta property="og:url" content="' . e($this->url) . '">' . PHP_EOL;
+        $html .= '<meta property="og:locale" content="' . e(app()->getLocale()) . '">' . PHP_EOL;
 
         if ($this->description) {
             $html .= '<meta property="og:description" content="' . e($this->description) . '">' . PHP_EOL;
@@ -226,8 +229,16 @@ class MetaService
 
         // Article specific meta tags
         if ($this->type === 'article' && isset($this->articleMeta)) {
+            if ($this->author) {
+                $html .= '<meta property="article:author" content="' . e($this->author) . '">' . PHP_EOL;
+            }
+
             $html .= '<meta property="article:published_time" content="' . e($this->articleMeta['published_time']) . '">' . PHP_EOL;
             $html .= '<meta property="article:modified_time" content="' . e($this->articleMeta['modified_time']) . '">' . PHP_EOL;
+
+            if (!empty($this->articleMeta['section'])) {
+                $html .= '<meta property="article:section" content="' . e($this->articleMeta['section']) . '">' . PHP_EOL;
+            }
 
             if (isset($this->articleMeta['tags']) && !empty($this->articleMeta['tags'])) {
                 foreach ($this->articleMeta['tags'] as $tag) {

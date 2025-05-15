@@ -14,6 +14,15 @@
         </div>
     </x-slot>
 
+    <x-seo-meta 
+        title="My Blog Posts" 
+        description="Manage and view all your published and draft blog posts on BlogNest" 
+        :keywords="['blog management', 'content dashboard', 'blogging platform', 'article management']" 
+        type="website"
+        :image="asset('images/blog-dashboard.jpg')"
+        robots="noindex, follow"
+    />
+
     <div class="py-8 px-4 max-w-6xl mx-auto">
         @if (session('success'))
             <div class="mb-4 p-4 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 shadow">
