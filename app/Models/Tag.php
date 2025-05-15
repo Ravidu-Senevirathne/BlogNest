@@ -36,7 +36,7 @@ class Tag extends Model
     }
 
     /**
-     * Get the posts that belong to this tag.
+     * Get the posts that are tagged with this tag.
      */
     public function posts()
     {
