@@ -18,7 +18,7 @@
         {{ $styles ?? '' }}
 
         <!-- Scripts -->
-        @vite(['public/resources/css/app.css', 'public/resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         
         <!-- Dark mode initialization script -->
         <x-theme.script />
