@@ -34,8 +34,8 @@ Use these credentials after seeding:
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd <project-directory>
+   git clone https://github.com/Ravidu-Senevirathne/BlogNest.git
+   cd BlogNest
    ```
 
 2. **Install backend and frontend dependencies**
@@ -108,7 +108,7 @@ BlogNest uses Laravel's queue system for background tasks like image processing.
   ```bash
   php artisan queue:work
   ```
-
+live on : blognest-production.up.railway.app
 
 ## 💬 Credits
 
