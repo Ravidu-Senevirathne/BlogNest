@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\CacheService;
 use App\Services\ImageService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,8 +28,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
+    public function boot(): void{
+
+        if (app()->environment('production')) {
+        URL::forceScheme('https');
+        }
     }
-}
+      
+        
+    }
