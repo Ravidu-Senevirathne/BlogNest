@@ -109,32 +109,6 @@ BlogNest uses Laravel's queue system for background tasks like image processing.
   php artisan queue:work
   ```
 
-### Production (Supervisor Config Example)
-
-Use Supervisor to run queue workers in the background on production:
-
-```ini
-[program:blognest-worker]
-process_name=%(program_name)s_%(process_num)02d
-command=php /path/to/blognest/artisan queue:work --sleep=3 --tries=3 --max-time=3600
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-user=www-data
-numprocs=2
-redirect_stderr=true
-stdout_logfile=/path/to/worker.log
-stopwaitsecs=3600
-```
-
----
-
-## 📜 License
-
-The Laravel framework and this project are open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
----
 
 ## 💬 Credits
 
