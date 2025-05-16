@@ -7,80 +7,113 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# BlogNest 📝
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A modern multi-user blogging platform built with Laravel 10.  
+Supports role-based access: **Admin**, **Editor**, and **Reader**, with a dynamic dashboard and rich blog features.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🔐 Seeded User Accounts
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Use these credentials after seeding:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Role   | Email              | Password           |
+|--------|--------------------|--------------------|
+| Admin  | admin@example.com  | StrongPassword123  |
+| Editor | editor@example.com | password           |
+| Reader | reader@example.com | password           |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## ⚙️ Local Setup
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Step-by-Step
 
-### Premium Partners
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd <project-directory>
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. **Install backend and frontend dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-## Contributing
+3. **Create your `.env` file**
+   ```bash
+   cp .env.example .env
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Set your `.env` values:**
 
-## Code of Conduct
+   - Database:
+     ```env
+     DB_DATABASE=your_database_name
+     DB_USERNAME=your_db_user
+     DB_PASSWORD=your_db_password
+     ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   - Seeder admin credentials:
+     ```env
+     ADMIN_EMAIL=admin@example.com
+     ADMIN_PASSWORD=StrongPassword123
+     ```
 
-## Security Vulnerabilities
+   - Queue (optional):
+     ```env
+     QUEUE_CONNECTION=database
+     ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Generate app key**
+   ```bash
+   php artisan key:generate
+   ```
 
-## License
+6. **Run migrations and seeders**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+7. **Build frontend assets**
+   ```bash
+   npm run dev
+   ```
 
-# BlogNest
+8. **Start development server**
+   ```bash
+   php artisan serve
+   ```
 
-## Queue Processing
+Visit [http://localhost:8000](http://localhost:8000) and log in using any of the accounts above.
 
-BlogNest uses Laravel's queue system for background processing tasks like image processing.
+---
 
-### Configuration
+## 🧵 Queue Processing (for image uploads, etc.)
 
-- Set `QUEUE_CONNECTION=database` in your `.env` file
-- Run `php artisan queue:work` to process jobs
+BlogNest uses Laravel's queue system for background tasks like image processing.
 
-### Production Deployment
+### Setup
 
-Use a process manager like Supervisor to keep the queue worker running:
+- Ensure `.env` has:
+  ```env
+  QUEUE_CONNECTION=database
+  ```
 
-```
+- Run:
+  ```bash
+  php artisan queue:work
+  ```
+
+### Production (Supervisor Config Example)
+
+Use Supervisor to run queue workers in the background on production:
+
+```ini
 [program:blognest-worker]
 process_name=%(program_name)s_%(process_num)02d
 command=php /path/to/blognest/artisan queue:work --sleep=3 --tries=3 --max-time=3600
@@ -94,3 +127,18 @@ redirect_stderr=true
 stdout_logfile=/path/to/worker.log
 stopwaitsecs=3600
 ```
+
+---
+
+## 📜 License
+
+The Laravel framework and this project are open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+## 💬 Credits
+
+Developed by **Ravidu Senevirathne**  
+Email: ravidu.dilruk@gmail.com  
+GitHub: [Ravidu-Senevirathne](https://github.com/Ravidu-Senevirathne)  
+LinkedIn: [Ravidu Senevirathne](https://www.linkedin.com/in/ravidu-senevirathne/)
